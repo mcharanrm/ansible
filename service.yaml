@@ -1,0 +1,18 @@
+#Service Playbook
+#copies script to ~/.ansible/tmp/ and then begins execution
+
+- name: "learning to use script module"
+  hosts: all
+  tasks: 
+         - 
+            name: "docker service"
+            command: systemctl status docker
+            register: result
+         - 
+            name: "start container"
+            script: /ansible/start_container.sh		# +x not set
+            args:
+                  executable: bash
+            when: result.stdout.find("running") != -1
+
+
