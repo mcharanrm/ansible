@@ -1,0 +1,13 @@
+# remove offending ssh keys from known_hosts file
+# https://docs.ansible.com/ansible/latest/modules/lineinfile_module.html
+---
+- hosts: localhost
+  gather_facts: no
+  tasks:
+      - name: clean offending keys in ssh known_hosts file
+        lineinfile:
+            path: /home/cmusali/.ssh/known_hosts
+            regexp: "^{{ item }}"
+            state: absent
+        with_items:
+            - "{{ groups['all'] }}" #magic variable
