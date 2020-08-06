@@ -1,0 +1,20 @@
+#
+#
+#
+---
+- hosts: all
+  gather_facts: no
+  vars:
+    chatty_message_size: 100 #event size in Bytes
+    chatty_num_messages: 10  #number of events
+    chatty_hosts: 10         #number of hosts in inventory
+  tasks:
+    - set_fact:
+          chatty_payload: "{{ chatty_num_messages * chatty_hosts * chatty_message_size }} Bytes"
+          chatty_message: "{{ '$' * chatty_message_size }}"
+    - debug:
+          msg: "Generated payload size: {{ chatty_payload }}"
+          verbosity: 0
+    - debug:
+          msg: "{{ chatty_message }}"
+      with_sequence: "count={{ chatty_num_messages }}"
